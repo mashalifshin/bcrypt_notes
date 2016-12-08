@@ -1,10 +1,12 @@
+----------------------------------
 BCrypt and Authentication
 ----------------------------------
 - bcrypt and secure passwords
 - cookies and sessions
 - implementation notes
 
-Secure passwords
+----------------------------------
+Bcrypt Secure passwords
 ----------------------------------
 - Cant store pwds in the clear
 - We dont want to know ur password
@@ -35,17 +37,14 @@ Resources
 - https://en.m.wikipedia.org/wiki/Bcrypt
 - http://stackoverflow.com/questions/6832445/how-can-bcrypt-have-built-in-salts
 
-
+----------------------------------
 Cookies and sessions
 ----------------------------------
 - Would like http to be a bit less stateless
 - Know who a visitor is across requests
 - In sinatra, you access cookies thru the session
-
 - Session is a hash like object available in all ur contollers. You can assign keys and values. When you assign them, sinatra will write a cookie for your domain in the users browser
-
 - Every request the browser makes on that domain, the cookie will be sent along
-
 - So you can set a unique value in the session and check who ur visitor is
 
 
@@ -60,51 +59,45 @@ Implementation notes
 
 For our controllers and views, we need to
 
-- show a form to register a user
-get /users/new
+1. Show a form to register a user
+- get /users/new
 
-- handle a user registration form submission
-post /users
+2. Handle a user registration form submission
+- post /users
+- create the hashed password here (thru the use of the User model)
 
-- show a login form
-get /sessions/new
-OR
-get /login
+3. Show a login form
+- get /sessions/new OR get /login
 
-- handle a login form submission
-post /sessions
-post /login
+4. Handle a login form submission
+- post /sessions
+- post /login
+- session[:user_id] = @user.id
 
-session[:user_id] = @user.id
-
-- handle a logout button
-delete /sessions/id=84534
-OR
-delete /sessions
-OR
-post/delete /logout
-
-session[:user_id] = nil
+5. Handle a logout button
+- delete /sessions/id=84534 OR delete /sessions OR post/delete /logout
+- session[:user_id] = nil
 
 Aaaand LASTLY
 
-- access the user from any route
+6. Access the user from any route
+```
 if session[:user_id]
   @user = User.find(:user_id => session[:user_id])
-  # they are logged in
+   # they are logged in
 else
-  # noone is logged in
-
-# Use a helper method something like
-
+   # no one is logged in
+```
+- Use a helper method something like
+````
 def current_user
   if session[:user_id]
-    return User
-  current_user
+    return User.find(:user_id => session[:user_id])
 end
+```
 
-# in some controller where i have to check the user_id
-
+- In some controller where i have to check the user_id
+```
 get '/users/:id'
   if current_user
     # render the profile
@@ -112,3 +105,4 @@ get '/users/:id'
     # send them to the login page
   end
 end
+```
