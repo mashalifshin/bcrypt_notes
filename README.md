@@ -32,10 +32,8 @@ When someone tries to auth:
 - if the generated string from using this key matches the stored cipher text, it's a match
 
 Resources
-https://en.m.wikipedia.org/wiki/Bcrypt
-http://stackoverflow.com/questions/6832445/how-can-bcrypt-have-built-in-salts
-- look at exactly how Bcrypt does what it does in the PAssword object
--
+- https://en.m.wikipedia.org/wiki/Bcrypt
+- http://stackoverflow.com/questions/6832445/how-can-bcrypt-have-built-in-salts
 
 
 Cookies and sessions
