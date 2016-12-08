@@ -60,23 +60,23 @@ Implementation notes
 For our controllers and views, we need to
 
 1. Show a form to register a user
-- get /users/new
+-- get /users/new
 
 2. Handle a user registration form submission
-- post /users
-- create the hashed password here (thru the use of the User model)
+-- post /users
+-- create the hashed password here (thru the use of the User model)
 
 3. Show a login form
-- get /sessions/new OR get /login
+-- get /sessions/new OR get /login
 
 4. Handle a login form submission
-- post /sessions
-- post /login
-- session[:user_id] = @user.id
+-- post /sessions
+-- post /login
+-- session[:user_id] = @user.id
 
 5. Handle a logout button
-- delete /sessions/id=84534 OR delete /sessions OR post/delete /logout
-- session[:user_id] = nil
+-- delete /sessions/id=84534 OR delete /sessions OR post/delete /logout
+-- session[:user_id] = nil
 
 Aaaand LASTLY
 
