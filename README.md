@@ -74,13 +74,12 @@ For our controllers and views, we need to
 
 4. Handle a login form submission
 
-- post /sessions
-- post /login
+- post /sessions OR post /login
 - session[:user_id] = @user.id
 
 5. Handle a logout button
 
-- delete /sessions/id=84534 OR delete /sessions OR post/delete /logout
+- delete /sessions/id=84534 OR delete /sessions OR post/delete /logout (this is where the RESTfulness kinda breaks down with the login pattern :-)
 - session[:user_id] = nil
 
 Aaaand LASTLY
