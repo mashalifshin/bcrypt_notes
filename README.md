@@ -1,3 +1,5 @@
+https://twitter.com/joshgondelman/status/831721181770313728/photo/1
+
 ----------------------------------
 BCrypt and Authentication
 ----------------------------------
@@ -20,9 +22,9 @@ $2a$10$vI8aWBnW3fID.ZQ4/zo1G.q1lRps.9cGLcZEiGDMVr5yUP1KUOYTa
 
 Here are the components
 
-- 2a is the version of bcrypt
-- 10 is the cost factor; 2^10 iterations of the key derivation function are used
-- vI8aWBnW3fID.ZQ4/zo1G.q1lRps.9cGLcZEiGDMVr5yUP1KUOYTa is the salt and the cipher text, concatenated and encoded in a modified Base-64. The first 22 characters decode to a 16-byte value for the salt. The salt is random.  The salt is there to prevent rainbow table attacks. The remaining characters are cipher text to be compared for authentication
+- 2a is the *version* of bcrypt
+- 10 is the *cost* factor; 2^10 iterations of the key derivation function are used
+- vI8aWBnW3fID.ZQ4/zo1G.q1lRps.9cGLcZEiGDMVr5yUP1KUOYTa is the *salt* and the *cipher text*, concatenated and encoded in a modified Base-64. The first 22 characters decode to a 16-byte value for the salt. The salt is random.  The salt is there to prevent rainbow table attacks. The remaining characters are cipher text to be compared for authentication
 
 When someone first enters their pwd:
 - derive a key using the password and salt and cost.
@@ -36,6 +38,7 @@ When someone tries to auth:
 Resources
 - https://en.m.wikipedia.org/wiki/Bcrypt
 - http://stackoverflow.com/questions/6832445/how-can-bcrypt-have-built-in-salts
+- http://security.stackexchange.com/questions/4781/do-any-security-experts-recommend-bcrypt-for-password-storage
 
 ----------------------------------
 Cookies and sessions
@@ -54,37 +57,45 @@ Implementation notes
 
 - Include bcrypt gem in ur Gemfile
 - bundle
-- set up user table in db to have password_hash field
-- Override getters and setters in the user model
+- require the gem in the environment
+- set up user table in db to have password_hash field (not password!)
+- Create password attr_reader and attr_accessor in the user model
 
-For our controllers and views, we need to
+### For our controllers and views, we need to
 
-1. Show a form to register a user
+1. show a form to register a user
+`get /users/new`
+(Regular CRUD route)
 
-- get /users/new
+2. handle a user registration form submission
+`post /users`
+(Regular CRUD route)
 
-2. Handle a user registration form submission
+3. show a login form
+`get /sessions/new` (CRUD style routing with session as the resource)
+`get /login`  (declarative style for a non-RESTful operation)
 
-- post /users 
-- create the hashed password here (thru the use of the User model)
+4. handle a login form submission
+`post /sessions`
+`post /login`
 
-3. Show a login form
+When the user logs in, set a value in the session, like so:
+`session[:user_id] = @user.id`
 
-- get /sessions/new OR get /login
+5. handle a logout button submission
+`delete /sessions` (CRUD style routing -- but it's weird because there is no resource id)
+`delete /logout`
 
-4. Handle a login form submission
+When the user logs out, clear that value in the session, like so:
+`session[:user_id] = nil`
 
-- post /sessions OR post /login
-- session[:user_id] = @user.id
+Or clear everything in the session
+`session.clear`
 
-5. Handle a logout button
 
-- delete /sessions/id=84534 OR delete /sessions OR post/delete /logout (this is where the RESTfulness kinda breaks down with the login pattern :-)
-- session[:user_id] = nil
+### Aaaand LASTLY
 
-Aaaand LASTLY
-
-6. Access the user from any route
+Access the user from any route
 ```
 if session[:user_id]
   @user = User.find(:user_id => session[:user_id])
