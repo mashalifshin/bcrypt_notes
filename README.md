@@ -67,26 +67,30 @@ Implementation notes
 ### For our controllers and views, we need to
 
 1. show a form to register a user
-`get /users/new`
-(Regular CRUD route)
+
+`get /users/new`   (Regular CRUD route)
 
 2. handle a user registration form submission
-`post /users`
-(Regular CRUD route)
+`post /users`   (Regular CRUD route)
 
 3. show a login form
 `get /sessions/new` (CRUD style routing with session as the resource)
+or
 `get /login`  (declarative style for a non-RESTful operation)
 
 4. handle a login form submission
+
 `post /sessions`
+or 
 `post /login`
 
 When the user logs in, set a value in the session, like so:
 `session[:user_id] = @user.id`
 
 5. handle a logout button submission
+
 `delete /sessions` (CRUD style routing -- but it's weird because there is no resource id)
+or
 `delete /logout`
 
 When the user logs out, clear that value in the session, like so:
@@ -96,29 +100,48 @@ Or clear everything in the session
 `session.clear`
 
 
-### Aaaand LASTLY
-
-Access the user from any route
+- You can now access the user from any route!
 ```
 if session[:user_id]
-  @user = User.find(:user_id => session[:user_id])
-   # they are logged in
+  @user = User.find(  session[:user_id])
+  # they are logged in
 else
-   # no one is logged in
+  # no one is logged in
 ```
-- Use a helper method something like
-````
+
+# Make a current_user helper method something like
+```
 def current_user
   if session[:user_id]
-    return User.find(:user_id => session[:user_id])
+    # return User
+  else
+    # return nil
 end
 ```
 
-- In some controller where i have to check the user_id
+# Make helper methods for logging in and logging out operations
+
 ```
-get '/users/:id'
+def login password_attempt
+  # find the user in the DB by email/username
+  # check the password attempt against the user's stored password
+  # if it matches, set a value for user_id in the session
+  # if it doesn't, redirect the user and show them a message
+end
+```
+
+```
+def logout
+  # clear out the user_id value in the session
+end
+```
+
+# In some controller where i have to check the user_id
+
+```
+get '/secret_route_only_for_logged_in_people'
   if current_user
-    # render the profile
+    # render the secret view
   else
     # send them to the login page
   end
