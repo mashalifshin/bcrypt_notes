@@ -18,13 +18,13 @@ We want a function where given a string, we can tranform it in some way and outp
 
 Here is an example bcrypt output
 
-$2a$10$vI8aWBnW3fID.ZQ4/zo1G.q1lRps.9cGLcZEiGDMVr5yUP1KUOYTa
+`$2a$10$vI8aWBnW3fID.ZQ4/zo1G.q1lRps.9cGLcZEiGDMVr5yUP1KUOYTa`
 
 Here are the components
 
-- 2a is the *version* of bcrypt
-- 10 is the *cost* factor; 2^10 iterations of the key derivation function are used
-- vI8aWBnW3fID.ZQ4/zo1G.q1lRps.9cGLcZEiGDMVr5yUP1KUOYTa is the *salt* and the *cipher text*, concatenated and encoded in a modified Base-64. The first 22 characters decode to a 16-byte value for the salt. The salt is random.  The salt is there to prevent rainbow table attacks. The remaining characters are cipher text to be compared for authentication
+- `2a` is the *version* of bcrypt
+- `10` is the *cost* factor; 2^10 iterations of the key derivation function are used
+- `vI8aWBnW3fID.ZQ4/zo1G.q1lRps.9cGLcZEiGDMVr5yUP1KUOYTa` is the *salt* and the *cipher text*, concatenated and encoded in a modified Base-64. The first 22 characters decode to a 16-byte value for the salt. The salt is random.  The salt is there to prevent rainbow table attacks. The remaining characters are cipher text to be compared for authentication
 
 When someone first enters their pwd:
 - derive a key using the password and salt and cost.
@@ -45,6 +45,9 @@ Cookies and sessions
 ----------------------------------
 - Would like http to be a bit less stateless
 - Know who a visitor is across requests
+- HTTP uses cookies, set on the browser, to keep state
+- This makes it so we don't have to log in on any page that requires auth in an app
+
 - In sinatra, you access cookies thru the session
 - Session is a hash like object available in all ur contollers. You can assign keys and values. When you assign them, sinatra will write a cookie for your domain in the users browser
 - Every request the browser makes on that domain, the cookie will be sent along
