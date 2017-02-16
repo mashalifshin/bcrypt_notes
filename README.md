@@ -66,35 +66,26 @@ Implementation notes
 
 ### For our controllers and views, we need to
 
-1. show a form to register a user
+- show a form to register a user
 `get /users/new`   (Regular CRUD route)
 
-2. handle a user registration form submission
+- handle a user registration form submission
 `post /users`   (Regular CRUD route)
 
-3. show a login form
+- show a login form
 `get /sessions/new` (CRUD style routing with session as the resource)
 or
 `get /login`  (declarative style for a non-RESTful operation)
 
-4. handle a login form submission
+- handle a login form submission
 `post /sessions`
 or 
 `post /login`
 
-When the user logs in, set a value in the session, like so:
-`session[:user_id] = @user.id`
-
-5. handle a logout button submission
+- handle a logout button submission
 `delete /sessions` (CRUD style routing -- but it's weird because there is no resource id)
 or
 `delete /logout`
-
-When the user logs out, clear that value in the session, like so:
-`session[:user_id] = nil`
-
-Or clear everything in the session
-`session.clear`
 
 
 - You can now access the user from any route!
@@ -119,6 +110,7 @@ end
 # Make helper methods for logging in and logging out operations
 
 ```
+# When the user logs in, set a value in the session, like so:
 def login password_attempt
   # find the user in the DB by email/username
   # check the password attempt against the user's stored password
@@ -128,12 +120,16 @@ end
 ```
 
 ```
+# When the user logs out, clear that value in the session, like so:
+
 def logout
   # clear out the user_id value in the session
+  # clear out user_id session[:user_id] = nil
+  # or clear everything out of the session session.clear
 end
 ```
 
-# In some controller where i have to check the user_id
+# In some controller where i have to check if someone is logged in
 
 ```
 get '/secret_route_only_for_logged_in_people'
