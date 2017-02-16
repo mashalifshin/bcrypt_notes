@@ -67,7 +67,6 @@ Implementation notes
 ### For our controllers and views, we need to
 
 1. show a form to register a user
-
 `get /users/new`   (Regular CRUD route)
 
 2. handle a user registration form submission
@@ -79,7 +78,6 @@ or
 `get /login`  (declarative style for a non-RESTful operation)
 
 4. handle a login form submission
-
 `post /sessions`
 or 
 `post /login`
@@ -88,7 +86,6 @@ When the user logs in, set a value in the session, like so:
 `session[:user_id] = @user.id`
 
 5. handle a logout button submission
-
 `delete /sessions` (CRUD style routing -- but it's weird because there is no resource id)
 or
 `delete /logout`
