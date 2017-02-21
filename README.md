@@ -48,8 +48,8 @@ Cookies and sessions
 - HTTP uses cookies, set on the browser, to keep state
 - This makes it so we don't have to log in on any page that requires auth in an app
 
-- In sinatra, you access cookies thru the session
-- Session is a hash like object available in all ur contollers. You can assign keys and values. When you assign them, sinatra will write a cookie for your domain in the users browser
+- In sinatra, you access cookies thru the `session` object
+- `session` is a hash like object available in all ur contollers. You can assign keys and values. When you assign them, sinatra will write a cookie for your domain in the users browser
 - Every request the browser makes on that domain, the cookie will be sent along
 - So you can set a unique value in the session and check who ur visitor is
 
@@ -59,10 +59,10 @@ Implementation notes
 ----------------------------------
 
 - Include bcrypt gem in ur Gemfile
-- bundle
+- `bundle`
 - require the gem in the environment
-- set up user table in db to have password_hash field (not password!)
-- Create password attr_reader and attr_accessor in the user model
+- set up user table in db to have `password_hash` field (not password!)
+- Create password `attr_reader` and `attr_accessor` in the user model
 
 ### For our controllers and views, we need to
 
