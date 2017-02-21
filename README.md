@@ -92,9 +92,9 @@ or
 ```
 if session[:user_id]
   @user = User.find(  session[:user_id])
-  # they are logged in
+  # Someone is logged in
 else
-  # no one is logged in
+  # No one is logged in
 ```
 
 # Make a current_user helper method something like
