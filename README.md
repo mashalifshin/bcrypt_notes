@@ -111,6 +111,7 @@ end
 
 ```
 # When the user logs in, set a value in the session, like so:
+
 def login password_attempt
   # find the user in the DB by email/username
   # check the password attempt against the user's stored password
